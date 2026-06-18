@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,15 @@
   <meta property="og:title" content="Responsive Image srcset Builder | SrcsetBuilder">
   <meta property="og:description"
     content="Build correct srcset and sizes markup from your target breakpoints. Fast, precise, and copy-ready.">
-  <meta property="og:image" content="https://srcsetbuilder.io/images/opengraph.png">
-  <meta property="og:url" content="https://srcsetbuilder.io/">
+  <meta property="og:image" content="https://srcsetbuilder.com/images/opengraph.png">
+  <meta property="og:url" content="https://srcsetbuilder.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Responsive Image srcset Builder | SrcsetBuilder">
   <meta name="twitter:description"
     content="Generate responsive image markup with valid srcset and sizes values in seconds.">
-  <meta name="twitter:image" content="https://srcsetbuilder.io/images/opengraph.png">
-  <link rel="canonical" href="https://srcsetbuilder.io/">
+  <meta name="twitter:image" content="https://srcsetbuilder.com/images/opengraph.png">
+  <link rel="canonical" href="https://srcsetbuilder.com/">
   <title>Responsive Image srcset Builder | SrcsetBuilder</title>
   <link rel="icon" type="image/svg+xml" href="images/logo.svg">
   <link rel="icon" type="image/png" href="images/favicon.png">
@@ -34,7 +35,17 @@
       }
     })();
   </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZLNP8FCTZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-SZLNP8FCTZ');
+  </script>
 </head>
+
 <body>
 
   <!-- SKIP NAVIGATION -->
@@ -88,7 +99,8 @@
             </div>
             <div class="tool-toggle-group" role="group" aria-label="Descriptor type">
               <span class="tool-toggle-group__label">Descriptors:</span>
-              <button type="button" class="mode-btn mode-btn--active" id="desc-width" aria-pressed="true">Width (w)</button>
+              <button type="button" class="mode-btn mode-btn--active" id="desc-width" aria-pressed="true">Width
+                (w)</button>
               <button type="button" class="mode-btn" id="desc-density" aria-pressed="false">Density (x)</button>
             </div>
           </div>
@@ -113,9 +125,12 @@
             </div>
 
             <div class="form-group form-group--wide">
-              <label class="form-group__label" for="image-path">Image path <span class="form-group__optional">(optional)</span></label>
-              <input class="form-group__input" type="text" id="image-path" placeholder="e.g. images/" aria-describedby="image-path-hint">
-              <span class="form-group__hint" id="image-path-hint">Folder prefix prepended to every candidate URL. Include the trailing slash.</span>
+              <label class="form-group__label" for="image-path">Image path <span
+                  class="form-group__optional">(optional)</span></label>
+              <input class="form-group__input" type="text" id="image-path" placeholder="e.g. images/"
+                aria-describedby="image-path-hint">
+              <span class="form-group__hint" id="image-path-hint">Folder prefix prepended to every candidate URL.
+                Include the trailing slash.</span>
             </div>
 
             <!-- PRESET WIDTH BUTTONS -->
@@ -142,7 +157,8 @@
             <div class="form-group form-group--wide" id="sizes-group">
               <div class="form-group__label-row">
                 <label class="form-group__label form-group__label--required" for="sizes">Sizes attribute</label>
-                <button class="form-group__reset-btn" id="reset-sizes" type="button" aria-label="Reset sizes to default value">Reset</button>
+                <button class="form-group__reset-btn" id="reset-sizes" type="button"
+                  aria-label="Reset sizes to default value">Reset</button>
               </div>
               <textarea class="form-group__input form-group__textarea" id="sizes" rows="3" aria-required="true"
                 aria-describedby="sizes-hint">(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1200px</textarea>
@@ -162,7 +178,8 @@
             </div>
 
             <div class="form-group form-group--span-2">
-              <label class="form-group__label" for="class-name">Class name <span class="form-group__optional">(optional)</span></label>
+              <label class="form-group__label" for="class-name">Class name <span
+                  class="form-group__optional">(optional)</span></label>
               <input class="form-group__input" type="text" id="class-name" placeholder="e.g. hero__image" value="">
             </div>
 
@@ -184,7 +201,8 @@
             </div>
 
             <div class="form-group form-group--span-2">
-              <label class="form-group__label" for="fetch-priority">Fetch priority <span class="form-group__optional">(optional)</span></label>
+              <label class="form-group__label" for="fetch-priority">Fetch priority <span
+                  class="form-group__optional">(optional)</span></label>
               <select class="form-group__input" id="fetch-priority">
                 <option value="">-- none --</option>
                 <option value="high">high</option>
@@ -194,21 +212,24 @@
             </div>
 
             <div class="form-group">
-              <label class="form-group__label" for="img-width">Width <span class="form-group__optional">(optional)</span></label>
+              <label class="form-group__label" for="img-width">Width <span
+                  class="form-group__optional">(optional)</span></label>
               <input class="form-group__input" type="number" id="img-width" placeholder="e.g. 1200" min="1"
                 aria-describedby="img-width-hint">
               <span class="form-group__hint" id="img-width-hint">Intrinsic px width. Prevents CLS.</span>
             </div>
 
             <div class="form-group">
-              <label class="form-group__label" for="img-height">Height <span class="form-group__optional">(optional)</span></label>
+              <label class="form-group__label" for="img-height">Height <span
+                  class="form-group__optional">(optional)</span></label>
               <input class="form-group__input" type="number" id="img-height" placeholder="e.g. 675" min="1"
                 aria-describedby="img-height-hint">
               <span class="form-group__hint" id="img-height-hint">Intrinsic px height. Prevents CLS.</span>
             </div>
 
             <div class="form-group form-group--span-2">
-              <label class="form-group__label" for="cross-origin">crossorigin <span class="form-group__optional">(optional)</span></label>
+              <label class="form-group__label" for="cross-origin">crossorigin <span
+                  class="form-group__optional">(optional)</span></label>
               <select class="form-group__input" id="cross-origin" aria-describedby="cross-origin-hint">
                 <option value="">-- none --</option>
                 <option value="anonymous">anonymous</option>
@@ -224,7 +245,8 @@
         <div class="results" aria-live="polite">
           <div class="results__display">
             <span class="results__label" id="markup-output-label">Generated &lt;img&gt; markup</span>
-            <output class="results__display-value" id="tool-output" for="base-name widths sizes alt-text" aria-labelledby="markup-output-label">—</output>
+            <output class="results__display-value" id="tool-output" for="base-name widths sizes alt-text"
+              aria-labelledby="markup-output-label">—</output>
             <p class="results__meta" id="result-meta">Add at least two valid widths to generate srcset output.</p>
           </div>
           <button class="results__copy-btn" type="button" aria-label="Copy result to clipboard" id="copy-btn">
@@ -235,11 +257,14 @@
         <!-- PRELOAD SNIPPET -->
         <div class="results results--preload" id="preload-section" hidden aria-live="polite">
           <div class="results__display">
-            <span class="results__label" id="preload-output-label">Preload snippet &mdash; add inside <code>&lt;head&gt;</code></span>
-            <output class="results__display-value" id="preload-output" for="base-name widths sizes fetch-priority" aria-labelledby="preload-output-label"></output>
+            <span class="results__label" id="preload-output-label">Preload snippet &mdash; add inside
+              <code>&lt;head&gt;</code></span>
+            <output class="results__display-value" id="preload-output" for="base-name widths sizes fetch-priority"
+              aria-labelledby="preload-output-label"></output>
             <p class="results__meta" id="preload-meta"></p>
           </div>
-          <button class="results__copy-btn" type="button" aria-label="Copy preload snippet to clipboard" id="copy-preload-btn">
+          <button class="results__copy-btn" type="button" aria-label="Copy preload snippet to clipboard"
+            id="copy-preload-btn">
             Copy
           </button>
         </div>
@@ -323,7 +348,8 @@
             <div class="upload-zone__placeholder" id="upload-placeholder">
               <span class="upload-zone__icon" aria-hidden="true">&#128247;</span>
               <p class="upload-zone__text">Drop an image here or
-                <span class="upload-zone__browse">click to browse</span></p>
+                <span class="upload-zone__browse">click to browse</span>
+              </p>
               <p class="upload-zone__hint">Supports JPG, PNG, WebP, GIF</p>
             </div>
             <div class="upload-zone__preview" id="upload-preview" hidden>
@@ -346,8 +372,8 @@
           </p>
 
           <div class="export-actions">
-            <button class="export-btn" id="export-btn" type="button"
-              aria-label="Export all resized candidates as a zip" disabled>
+            <button class="export-btn" id="export-btn" type="button" aria-label="Export all resized candidates as a zip"
+              disabled>
               Download zip
             </button>
             <div class="export-progress" id="export-progress" hidden aria-hidden="true">
@@ -518,4 +544,5 @@
   <script src="js/content.js"></script>
 
 </body>
+
 </html>
