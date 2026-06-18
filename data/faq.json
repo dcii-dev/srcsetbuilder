@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What does srcset do?",
+    "answer": "<p><code>srcset</code> provides multiple image file candidates, each labeled with a width descriptor such as <code>320w</code> or a density descriptor such as <code>2x</code>. The browser compares those candidates against the rendered image size and device pixel ratio, then downloads the most appropriate file automatically.</p><p>This allows one HTML element to serve optimized assets across mobile, tablet, and desktop without any JavaScript routing.</p>"
+  },
+  {
+    "question": "When should I use picture tag mode instead of img?",
+    "answer": "<p>Use <strong>picture tag</strong> mode when you want to serve modern formats progressively. The output includes a <code>&lt;source type=\"image/avif\"&gt;</code> block, a <code>&lt;source type=\"image/webp\"&gt;</code> block, and a fallback <code>&lt;img&gt;</code> for older browsers. The browser downloads the first format it supports.</p><p>Use <strong>img tag</strong> mode when your asset pipeline already outputs a single optimized format or when you prefer simpler markup.</p>"
+  },
+  {
+    "question": "What is the difference between width and density descriptors?",
+    "answer": "<p>Width descriptors (<code>320w</code>, <code>768w</code>) combined with a <code>sizes</code> attribute let the browser make a layout-aware download decision. Use this for most images that change displayed size across breakpoints.</p><p>Density descriptors (<code>1x</code>, <code>2x</code>, <code>3x</code>) are appropriate for fixed-size elements such as logos, icons, and UI graphics where the rendered size never changes. In density mode the <code>sizes</code> attribute is hidden because it is not needed.</p>"
+  },
+  {
+    "question": "What do the DPR Coverage status labels mean?",
+    "answer": "<p><strong>Good</strong> means the candidate the browser would select is within a 1.3x overhead ratio of the required pixel count for that device. <strong>Undersized</strong> means no candidate is large enough to serve that device crisply. <strong>Oversized</strong> means the selected candidate carries significantly more pixels than needed.</p><p>If you see Undersized or Oversized, either add a candidate at the appropriate width or adjust your <code>sizes</code> expression to better reflect your actual layout.</p>"
+  },
+  {
+    "question": "Why do the presets set a sizes value as well as widths?",
+    "answer": "<p>Each preset represents a different layout context. A hero image and a product thumbnail have very different rendered widths at any given viewport size. Applying hero widths to a thumbnail without updating <code>sizes</code> causes the browser to evaluate the thumbnail as if it fills the viewport, which triggers unnecessarily large downloads.</p><p>The presets bundle a matching <code>sizes</code> expression so the DPR Coverage panel validates correctly out of the box.</p>"
+  },
+  {
+    "question": "How does the estimated file size column work?",
+    "answer": "<p>When you upload a source image, the builder resizes it to each candidate width in the background using the browser Canvas API and measures the resulting blob size. The estimates appear in the Candidate List table as each width completes.</p><p>Estimates reflect the current quality slider setting. If you adjust quality, the estimates reset and recalculate automatically.</p>"
+  },
+  {
+    "question": "Is AVIF export supported?",
+    "answer": "<p>AVIF export is supported in Chromium-based browsers at version 121 or later (Chrome, Edge, Brave, Opera). The tool runs a feature detection test on load and enables AVIF export only if the browser passes it. On Firefox and Safari the export button is disabled when AVIF is selected, and an explanatory note is shown.</p><p>AVIF is always available as a markup output format in the srcset and picture tag regardless of export support.</p>"
+  },
+  {
+    "question": "Should my src fallback use the largest candidate?",
+    "answer": "<p>Yes. Using the largest candidate as the <code>src</code> fallback is the standard pattern. Browsers that do not support <code>srcset</code> still receive a full-quality image, and the fallback is a known, consistently named file in your candidate set.</p><p>The zip export also includes an original-size file at the source image's native resolution, converted to your chosen format, for archival and future pipeline use.</p>"
+  },
+  {
+    "question": "What does the LCP warning mean?",
+    "answer": "<p>If you combine <code>loading=\"lazy\"</code> with no <code>fetchpriority</code> value, the tool shows a warning. Lazy loading defers the image fetch until the element is near the viewport, which is correct for below-the-fold content but can significantly delay Largest Contentful Paint for above-the-fold hero images.</p><p>For hero images, set <code>loading=\"eager\"</code> and <code>fetchpriority=\"high\"</code> to tell the browser to prioritize the download immediately.</p>"
+  },
+  {
+    "question": "Are my settings saved between sessions?",
+    "answer": "<p>Yes. All form values including base filename, widths, sizes, alt text, output mode, descriptor type, and quality are saved automatically to <code>localStorage</code> as you type. Returning to the tool restores your last session exactly.</p><p>Nothing is sent to a server. All processing happens entirely in your browser.</p>"
+  }
+]

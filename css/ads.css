@@ -1,0 +1,68 @@
+/* ================================
+   AD SLOTS
+   ================================ */
+
+/*
+ * Pre-allocating structural space for IAB standard ad units.
+ * Fixed dimensions prevent Cumulative Layout Shift (CLS) when
+ * ad scripts load asynchronously — a direct Core Web Vitals factor.
+ *
+ * IAB standard sizes used:
+ *   Leaderboard:         728 x 90
+ *   Large Leaderboard:   970 x 90  (max-width cap)
+ *   Medium Rectangle:    300 x 250 (highest fill rate across all networks)
+ *   Half Page:           300 x 600
+ *   Large Mobile Banner: 320 x 100
+ */
+
+.ad-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--clr-bg-alt, #f7f7f9);
+  border: 1px solid #e1e1e6;
+  margin: 1.5rem auto;
+  overflow: hidden;
+}
+
+.ad-slot__label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-text-muted, #4b5563);
+}
+
+/* Leaderboard — 728x90, capped at 970px (Large Leaderboard) */
+.ad-slot--leaderboard,
+.ad-slot--inline {
+  width: 100%;
+  max-width: 970px;
+  min-height: 90px;
+}
+
+/* Medium Rectangle — 300x250 (highest fill rate, works in sidebar + inline) */
+.ad-slot--rectangle {
+  width: 300px;
+  min-height: 250px;
+}
+
+/* Half Page — 300x600 */
+.ad-slot--sidebar {
+  width: 300px;
+  min-height: 600px;
+}
+
+/* Mobile: leaderboard collapses to Large Mobile Banner (320x100) */
+@media (max-width: 48em) {
+  .ad-slot--leaderboard,
+  .ad-slot--inline {
+    min-height: 100px;
+  }
+
+  /* Half page and rectangle both collapse to Medium Rectangle height */
+  .ad-slot--sidebar,
+  .ad-slot--rectangle {
+    width: 100%;
+    min-height: 250px;
+  }
+}

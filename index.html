@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Free responsive image srcset builder. Generate accurate srcset and sizes attributes, preview candidate widths, and copy a production-ready img tag in one click.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Responsive Image srcset Builder | SrcsetBuilder">
+  <meta property="og:description"
+    content="Build correct srcset and sizes markup from your target breakpoints. Fast, precise, and copy-ready.">
+  <meta property="og:image" content="https://srcsetbuilder.io/images/opengraph.png">
+  <meta property="og:url" content="https://srcsetbuilder.io/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Responsive Image srcset Builder | SrcsetBuilder">
+  <meta name="twitter:description"
+    content="Generate responsive image markup with valid srcset and sizes values in seconds.">
+  <meta name="twitter:image" content="https://srcsetbuilder.io/images/opengraph.png">
+  <link rel="canonical" href="https://srcsetbuilder.io/">
+  <title>Responsive Image srcset Builder | SrcsetBuilder</title>
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/ads.css">
+  <!-- Apply saved theme before paint to prevent flash of wrong theme -->
+  <script>
+    (function () {
+      const t = localStorage.getItem("srcsetbuilder-theme");
+      if (t === "dark" || t === "light") {
+        document.documentElement.setAttribute("data-theme", t);
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- SKIP NAVIGATION -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a href="/" class="site-header__logo" aria-label="SrcsetBuilder home">
+        <img class="site-header__logo-icon" src="images/logo.svg" alt="" width="28" height="28" aria-hidden="true">
+        SrcsetBuilder
+      </a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"
+        aria-pressed="false">
+        <span class="theme-toggle__icon theme-toggle__icon--light" aria-hidden="true">&#9788;</span>
+        <span class="theme-toggle__icon theme-toggle__icon--dark" aria-hidden="true">&#9790;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- AD LEADERBOARD TOP -->
+  <div class="ad-slot ad-slot--leaderboard" aria-hidden="true">
+    <span class="ad-slot__label">Advertisement</span>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="site-main" id="main-content">
+
+    <!-- TOOL SECTION -->
+    <section class="tool-section" aria-labelledby="tool-heading">
+      <div class="tool-section__inner">
+        <h1 class="tool-section__title" id="tool-heading">Responsive Image srcset Builder</h1>
+        <p class="tool-section__description">
+          Enter your base filename, breakpoint widths, and sizes value. The builder outputs a
+          production-ready <code>&lt;img&gt;</code> tag with all srcset candidates. Upload a source
+          image to also export every resized file as a zip, ready to deploy.
+        </p>
+
+        <!-- Status live region for action confirmations -->
+        <div class="sr-only" id="action-status" role="status" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- TOOL FORM -->
+        <form class="tool-form" id="tool-form" aria-label="Responsive image srcset inputs" novalidate>
+
+          <!-- OUTPUT + DESCRIPTOR MODE -->
+          <div class="tool-toggle-row">
+            <div class="tool-toggle-group" role="group" aria-label="Output format">
+              <span class="tool-toggle-group__label">Output:</span>
+              <button type="button" class="mode-btn mode-btn--active" id="mode-img" aria-pressed="true">img tag</button>
+              <button type="button" class="mode-btn" id="mode-picture" aria-pressed="false">picture tag</button>
+            </div>
+            <div class="tool-toggle-group" role="group" aria-label="Descriptor type">
+              <span class="tool-toggle-group__label">Descriptors:</span>
+              <button type="button" class="mode-btn mode-btn--active" id="desc-width" aria-pressed="true">Width (w)</button>
+              <button type="button" class="mode-btn" id="desc-density" aria-pressed="false">Density (x)</button>
+            </div>
+          </div>
+
+          <div class="tool-form__grid">
+            <div class="form-group form-group--span-3">
+              <label class="form-group__label form-group__label--required" for="base-name">Base filename</label>
+              <input class="form-group__input" type="text" id="base-name" value="hero" placeholder="e.g. hero"
+                aria-required="true" aria-describedby="base-hint">
+              <span class="form-group__hint" id="base-hint">Filename only, no path. Output pattern:
+                <code>path/base-width.ext</code>.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-group__label form-group__label--required" for="extension">Extension</label>
+              <select class="form-group__input" id="extension" aria-required="true">
+                <option value="webp" selected>webp</option>
+                <option value="avif">avif</option>
+                <option value="jpg">jpg</option>
+                <option value="png">png</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group--wide">
+              <label class="form-group__label" for="image-path">Image path <span class="form-group__optional">(optional)</span></label>
+              <input class="form-group__input" type="text" id="image-path" placeholder="e.g. images/" aria-describedby="image-path-hint">
+              <span class="form-group__hint" id="image-path-hint">Folder prefix prepended to every candidate URL. Include the trailing slash.</span>
+            </div>
+
+            <!-- PRESET WIDTH BUTTONS -->
+            <div class="form-group form-group--wide">
+              <span class="form-group__label">Width presets</span>
+              <div class="preset-bar" role="group" aria-label="Quick width presets">
+                <button class="preset-btn" type="button" data-preset="hero">Full hero</button>
+                <button class="preset-btn" type="button" data-preset="card">Card / Grid</button>
+                <button class="preset-btn" type="button" data-preset="sidebar">Sidebar</button>
+                <button class="preset-btn" type="button" data-preset="article">Article</button>
+                <button class="preset-btn" type="button" data-preset="thumbnail">Thumbnail</button>
+                <button class="preset-btn" type="button" data-preset="product">Product</button>
+              </div>
+            </div>
+
+            <div class="form-group form-group--wide">
+              <label class="form-group__label form-group__label--required" for="widths">Candidate widths</label>
+              <textarea class="form-group__input form-group__textarea" id="widths" rows="3" aria-required="true"
+                aria-describedby="widths-hint">320, 480, 640, 768, 960, 1200, 1600</textarea>
+              <span class="form-group__hint" id="widths-hint">Separate values with commas, spaces, or new lines.
+                Duplicate and invalid entries are removed automatically.</span>
+            </div>
+
+            <div class="form-group form-group--wide" id="sizes-group">
+              <div class="form-group__label-row">
+                <label class="form-group__label form-group__label--required" for="sizes">Sizes attribute</label>
+                <button class="form-group__reset-btn" id="reset-sizes" type="button" aria-label="Reset sizes to default value">Reset</button>
+              </div>
+              <textarea class="form-group__input form-group__textarea" id="sizes" rows="3" aria-required="true"
+                aria-describedby="sizes-hint">(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1200px</textarea>
+              <span class="form-group__hint" id="sizes-hint">Define how much viewport width the image occupies at
+                each breakpoint. Note: <code>100vw</code> includes the scrollbar (~15px on Windows) and may cause
+                a slightly oversized download on some devices.</span>
+            </div>
+
+            <div class="form-group form-group--span-2">
+              <div class="form-group__label-row">
+                <label class="form-group__label form-group__label--required" for="alt-text">Alt text</label>
+                <button class="form-group__reset-btn" id="resync-alt" type="button" hidden
+                  aria-label="Re-sync alt text from base filename">Re-sync</button>
+              </div>
+              <input class="form-group__input" type="text" id="alt-text" placeholder="e.g. Oak dining table in showroom"
+                value="Responsive hero image" aria-required="true">
+            </div>
+
+            <div class="form-group form-group--span-2">
+              <label class="form-group__label" for="class-name">Class name <span class="form-group__optional">(optional)</span></label>
+              <input class="form-group__input" type="text" id="class-name" placeholder="e.g. hero__image" value="">
+            </div>
+
+            <div class="form-group">
+              <label class="form-group__label" for="loading-mode">Loading</label>
+              <select class="form-group__input" id="loading-mode">
+                <option value="lazy" selected>lazy</option>
+                <option value="eager">eager</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-group__label" for="decoding-mode">Decoding</label>
+              <select class="form-group__input" id="decoding-mode">
+                <option value="async" selected>async</option>
+                <option value="auto">auto</option>
+                <option value="sync">sync</option>
+              </select>
+            </div>
+
+            <div class="form-group form-group--span-2">
+              <label class="form-group__label" for="fetch-priority">Fetch priority <span class="form-group__optional">(optional)</span></label>
+              <select class="form-group__input" id="fetch-priority">
+                <option value="">-- none --</option>
+                <option value="high">high</option>
+                <option value="low">low</option>
+                <option value="auto">auto</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-group__label" for="img-width">Width <span class="form-group__optional">(optional)</span></label>
+              <input class="form-group__input" type="number" id="img-width" placeholder="e.g. 1200" min="1"
+                aria-describedby="img-width-hint">
+              <span class="form-group__hint" id="img-width-hint">Intrinsic px width. Prevents CLS.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-group__label" for="img-height">Height <span class="form-group__optional">(optional)</span></label>
+              <input class="form-group__input" type="number" id="img-height" placeholder="e.g. 675" min="1"
+                aria-describedby="img-height-hint">
+              <span class="form-group__hint" id="img-height-hint">Intrinsic px height. Prevents CLS.</span>
+            </div>
+
+            <div class="form-group form-group--span-2">
+              <label class="form-group__label" for="cross-origin">crossorigin <span class="form-group__optional">(optional)</span></label>
+              <select class="form-group__input" id="cross-origin" aria-describedby="cross-origin-hint">
+                <option value="">-- none --</option>
+                <option value="anonymous">anonymous</option>
+                <option value="use-credentials">use-credentials</option>
+              </select>
+              <span class="form-group__hint" id="cross-origin-hint">Required when using a CDN with CORS headers and
+                <code>fetchpriority="high"</code>. Must match on both the preload tag and the img.</span>
+            </div>
+          </div>
+        </form>
+
+        <!-- RESULTS -->
+        <div class="results" aria-live="polite">
+          <div class="results__display">
+            <span class="results__label" id="markup-output-label">Generated &lt;img&gt; markup</span>
+            <output class="results__display-value" id="tool-output" for="base-name widths sizes alt-text" aria-labelledby="markup-output-label">—</output>
+            <p class="results__meta" id="result-meta">Add at least two valid widths to generate srcset output.</p>
+          </div>
+          <button class="results__copy-btn" type="button" aria-label="Copy result to clipboard" id="copy-btn">
+            Copy
+          </button>
+        </div>
+
+        <!-- PRELOAD SNIPPET -->
+        <div class="results results--preload" id="preload-section" hidden aria-live="polite">
+          <div class="results__display">
+            <span class="results__label" id="preload-output-label">Preload snippet &mdash; add inside <code>&lt;head&gt;</code></span>
+            <output class="results__display-value" id="preload-output" for="base-name widths sizes fetch-priority" aria-labelledby="preload-output-label"></output>
+            <p class="results__meta" id="preload-meta"></p>
+          </div>
+          <button class="results__copy-btn" type="button" aria-label="Copy preload snippet to clipboard" id="copy-preload-btn">
+            Copy
+          </button>
+        </div>
+
+        <p class="lcp-warning" id="lcp-warning" hidden>
+          <strong>LCP risk:</strong> loading="lazy" without fetchpriority can delay your Largest
+          Contentful Paint if this image is above the fold. Consider loading="eager" and
+          fetchpriority="high" for hero images.
+        </p>
+
+        <section class="candidate-table-wrap" aria-labelledby="candidate-table-title">
+          <h2 class="candidate-table-wrap__title" id="candidate-table-title">Candidate List</h2>
+          <p class="candidate-gap-warning" id="candidate-gap-warning" hidden>
+            Some adjacent candidate widths are less than 15% apart. The browser gains little benefit
+            from switching between them. Consider removing redundant widths to reduce asset variants.
+          </p>
+          <table class="candidate-table">
+            <thead>
+              <tr>
+                <th scope="col">Width</th>
+                <th scope="col">Candidate String</th>
+                <th scope="col">Est. Size</th>
+                <th scope="col">Copy</th>
+              </tr>
+            </thead>
+            <tbody id="candidate-table-body">
+              <tr>
+                <td colspan="4">No candidate widths parsed yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- DPR COVERAGE -->
+        <section class="dpr-panel" id="dpr-panel" hidden aria-labelledby="dpr-panel-title">
+          <h2 class="dpr-panel__title" id="dpr-panel-title">DPR Coverage Analysis</h2>
+          <p class="dpr-panel__desc">Shows which srcset candidate the browser would select at common device
+            profiles, based on your candidate widths and sizes attribute.</p>
+          <div class="dpr-panel__table-wrap">
+            <table class="dpr-table">
+              <thead>
+                <tr>
+                  <th scope="col">Device</th>
+                  <th scope="col">Viewport</th>
+                  <th scope="col">DPR</th>
+                  <th scope="col">Rendered width</th>
+                  <th scope="col">Needed pixels</th>
+                  <th scope="col">Selected</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="dpr-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- EXPORT SECTION -->
+        <section class="export-section" aria-labelledby="export-heading">
+          <h2 class="export-section__title" id="export-heading">Export Resized Images</h2>
+          <p class="export-section__desc">
+            Upload a source image to generate all candidate sizes as real files. The zip includes
+            every resized variant named <code>base-width.ext</code>, the original converted to your
+            selected format as <code>base.ext</code>, and <code>markup.txt</code> with the generated
+            <code>&lt;img&gt;</code> tag. Uploading a JPG and selecting WebP returns WebP files.
+          </p>
+
+          <div class="form-group quality-group">
+            <label class="form-group__label" for="quality-slider">
+              Export quality: <span id="quality-value">85</span>%
+              <span class="form-group__optional">(WebP and JPG only. PNG is always lossless.)</span>
+            </label>
+            <input type="range" class="quality-slider" id="quality-slider" min="1" max="100" value="85"
+              aria-describedby="quality-hint">
+            <span class="form-group__hint" id="quality-hint">Lower values reduce file size. Higher values
+              preserve detail. 85 is a good default.</span>
+          </div>
+
+          <div class="upload-zone" id="upload-zone">
+            <input type="file" id="image-upload" accept="image/*" class="upload-zone__input"
+              aria-label="Choose a source image to resize and export">
+            <div class="upload-zone__placeholder" id="upload-placeholder">
+              <span class="upload-zone__icon" aria-hidden="true">&#128247;</span>
+              <p class="upload-zone__text">Drop an image here or
+                <span class="upload-zone__browse">click to browse</span></p>
+              <p class="upload-zone__hint">Supports JPG, PNG, WebP, GIF</p>
+            </div>
+            <div class="upload-zone__preview" id="upload-preview" hidden>
+              <img class="upload-zone__preview-img" id="preview-img" src="" alt="">
+              <p class="upload-zone__preview-meta" id="preview-meta"></p>
+              <button class="upload-zone__clear-btn" id="clear-image" type="button"
+                aria-label="Remove uploaded image">&#10005; Remove image</button>
+            </div>
+          </div>
+
+          <p class="export-avif-note" id="export-avif-note" hidden>
+            AVIF export requires Chrome 121 or later. Your browser does not support AVIF encoding
+            via the Canvas API. Switch the extension to WebP, JPG, or PNG to export image files.
+          </p>
+
+          <p class="export-exif-note" id="export-exif-note" hidden>
+            EXIF orientation metadata is stripped during Canvas re-encoding. If the source image was
+            shot in portrait on a mobile device, verify the exported files render correctly before
+            deploying.
+          </p>
+
+          <div class="export-actions">
+            <button class="export-btn" id="export-btn" type="button"
+              aria-label="Export all resized candidates as a zip" disabled>
+              Download zip
+            </button>
+            <div class="export-progress" id="export-progress" hidden aria-hidden="true">
+              <div class="export-progress__bar" id="export-progress-bar"></div>
+            </div>
+            <p class="export-status" id="export-status" aria-live="polite"></p>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- AD INLINE MID PAGE -->
+    <div class="ad-slot ad-slot--inline" aria-hidden="true">
+      <span class="ad-slot__label">Advertisement</span>
+    </div>
+
+    <!-- CONTENT + SIDEBAR LAYOUT -->
+    <div class="content-layout">
+
+      <!-- MAIN COPY -->
+      <section class="content-section" aria-labelledby="content-heading">
+        <div class="content-section__body">
+          <h2 id="content-heading">How srcset and sizes Actually Work</h2>
+          <p>
+            Responsive images are one of the most impactful performance wins available in modern front-end work,
+            but they are also one of the easiest places to ship subtle mistakes. The goal is clear: send smaller
+            image files to smaller screens and crisper files to high-density displays. The practical challenge is
+            syntax, precision, and the relationship between your candidate widths, your
+            <code>sizes</code> attribute, and each device's pixel ratio.
+          </p>
+          <p>
+            The browser does not simply pick the smallest file. It evaluates each candidate from your
+            <code>srcset</code> against the rendered size of the image on the page. That rendered size comes from
+            your <code>sizes</code> attribute. If <code>sizes</code> says the image is 100vw on phones and 70vw on
+            tablets, the browser calculates an expected display width and chooses the most appropriate candidate,
+            accounting for device pixel ratio. On a 3x display a 393px visual slot requires approximately 1179px
+            of image resolution for crisp rendering.
+          </p>
+          <h3>Output Modes: img vs. picture</h3>
+          <p>
+            This builder supports two output modes. The <strong>img tag</strong> mode emits a single
+            <code>&lt;img&gt;</code> element with a <code>srcset</code> and <code>sizes</code> — the fastest path
+            to production for most cases. The <strong>picture tag</strong> mode wraps the output in a
+            <code>&lt;picture&gt;</code> element with separate <code>&lt;source&gt;</code> blocks for AVIF and
+            WebP, followed by a fallback <code>&lt;img&gt;</code>. This gives browsers a progressive format ladder:
+            AVIF for the best compression, WebP as a wide-support fallback, and your chosen format as the final
+            safety net for older clients.
+          </p>
+          <h3>Width vs. Density Descriptors</h3>
+          <p>
+            Width descriptors (<code>320w</code>, <code>768w</code>, etc.) combined with a
+            <code>sizes</code> attribute are the correct choice for most layout-responsive images. The browser uses
+            both pieces of information to make an optimal download decision based on viewport size and DPR.
+          </p>
+          <p>
+            Density descriptors (<code>1x</code>, <code>2x</code>, <code>3x</code>) are appropriate for fixed-size
+            images such as logos, icons, and UI elements where the rendered size does not change with viewport width.
+            In density mode the <code>sizes</code> attribute is not required and is hidden automatically.
+          </p>
+          <h3>Presets and Why Sizes Must Match Layout</h3>
+          <p>
+            The built-in width presets give you a validated starting point for six common image contexts: full-bleed
+            hero images, card grids, sidebars, article body images, product detail shots, and thumbnails. Each
+            preset populates both the candidate widths <em>and</em> the sizes attribute simultaneously. The sizes
+            values are calibrated so that every candidate set passes the DPR Coverage panel for all five reference
+            device profiles.
+          </p>
+          <p>
+            A common mistake is applying hero-sized candidate widths to a product grid image without updating
+            <code>sizes</code>. The browser then evaluates the image as if it fills the full viewport, selects
+            unnecessarily large files, and wastes bandwidth. The DPR Coverage panel makes this visible: if you
+            see an Undersized or Oversized status, your <code>sizes</code> value does not match your actual layout.
+          </p>
+          <h3>DPR Coverage Analysis</h3>
+          <p>
+            The DPR Coverage panel evaluates your candidate widths against five real device profiles spanning a range
+            of viewport widths and pixel densities, from an iPhone SE at 375px and 2x to a desktop monitor at 1920px
+            and 1x. For each profile it parses your <code>sizes</code> expression, calculates the rendered display
+            width, multiplies by DPR to get the required pixel count, and then identifies which candidate the browser
+            would select.
+          </p>
+          <p>
+            A status of <strong>Good</strong> means the selected candidate is within a 1.3x overhead ratio of the
+            needed pixels. <strong>Undersized</strong> means no candidate is large enough to serve that device
+            crisply. <strong>Oversized</strong> means the selected candidate is significantly larger than needed,
+            wasting bandwidth. Adjust candidate widths or refine your <code>sizes</code> expression until all five
+            profiles show Good.
+          </p>
+          <h3>Estimated File Sizes</h3>
+          <p>
+            When you upload a source image, the builder runs a background resize operation for each candidate width
+            using the browser's Canvas API. The resulting file sizes appear in the Candidate List table and update
+            live as each width completes. This gives you a concrete sense of the payload difference between
+            candidates before you export anything.
+          </p>
+          <p>
+            The quality slider controls the compression level for WebP, JPG, and AVIF exports. PNG is always
+            lossless and ignores the quality setting. Lowering quality reduces file size with a visual tradeoff;
+            85 percent is a reliable default for photographic content.
+          </p>
+          <h3>Exporting Resized Images</h3>
+          <p>
+            Upload a source image and the Export section becomes active. The builder resizes every candidate width
+            using Canvas, re-encodes to your chosen format, and packages the results into a zip file alongside
+            the generated markup as <code>markup.txt</code>. An original-size file is also included, converted to
+            your target format but at the source image's native resolution, for archival or future use.
+          </p>
+          <p>
+            AVIF export is supported in Chromium-based browsers (Chrome and Edge 121 or later). On Firefox and
+            Safari the AVIF option is disabled with an explanatory note. All other formats work across all
+            modern browsers.
+          </p>
+          <h3>LCP and fetchpriority</h3>
+          <p>
+            If you set <code>loading="lazy"</code> without a <code>fetchpriority</code> value, the tool displays
+            a warning. Lazy loading defers the fetch until the image is near the viewport, which is correct for
+            below-the-fold content but harmful for hero images that contribute to Largest Contentful Paint. For
+            above-the-fold images, use <code>loading="eager"</code> and <code>fetchpriority="high"</code> to
+            signal the browser to prioritize the download.
+          </p>
+          <h3>Settings Persistence</h3>
+          <p>
+            All form values, mode selections, descriptor type, and quality are saved automatically to
+            <code>localStorage</code> as you work. Returning to the tool restores your last session exactly,
+            including the selected output mode and descriptor type. Nothing is sent to a server.
+          </p>
+        </div>
+      </section>
+
+      <!-- SIDEBAR AD -->
+      <aside class="content-sidebar" aria-label="Advertisements">
+        <div class="ad-slot ad-slot--sidebar" aria-hidden="true">
+          <span class="ad-slot__label">Advertisement</span>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- AD MEDIUM RECTANGLE -->
+    <div class="ad-slot ad-slot--rectangle" aria-hidden="true">
+      <span class="ad-slot__label">Advertisement</span>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <div class="faq-section__inner">
+        <h2 class="faq-section__title" id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq__accordion" id="faq-accordion" aria-label="FAQ accordion">
+          <!-- Populated dynamically by js/content.js from data/faq.json -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">
+        &copy; <span id="footer-year"></span> SrcsetBuilder. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/content.js"></script>
+
+</body>
+</html>
